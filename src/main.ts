@@ -6,7 +6,7 @@ document.body.innerHTML = `
 `;
 
 const button = document.createElement("button");
-button.innerHTML = "🎮"; 
+button.innerHTML = "🎮";
 button.style.padding = "10px 20px";
 button.style.fontSize = "18px";
 button.style.cursor = "pointer";
