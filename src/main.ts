@@ -33,5 +33,10 @@ button.addEventListener("click", () => {
   counterDiv.textContent = `${count} game${count !== 1 ? "s" : ""}`;
 });
 
+setInterval(() => {
+  count++;
+  counterDiv.textContent = `${count} game${count !== 1 ? "s" : ""}`;
+}, 1000);
+
 document.body.appendChild(button);
 document.body.appendChild(counterDiv);
