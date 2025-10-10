@@ -11,6 +11,14 @@ button.style.padding = "10px 20px";
 button.style.fontSize = "18px";
 button.style.cursor = "pointer";
 
+const counterDiv = document.createElement("div");
+counterDiv.textContent = "0 games";
+counterDiv.style.marginTop = "15px";
+counterDiv.style.fontSize = "18px";
+counterDiv.style.fontWeight = "bold";
+
+let count = 0;
+
 button.onmouseover = () => {
   button.style.backgroundColor = "#ffcc00";
 };
@@ -21,7 +29,9 @@ button.onmouseout = () => {
 // Add click behavior
 button.addEventListener("click", () => {
   console.log("Button clicked");
-  alert("Fortnite");
+  count++;
+  counterDiv.textContent = `${count} game${count !== 1 ? "s" : ""}`;
 });
 
 document.body.appendChild(button);
+document.body.appendChild(counterDiv);
