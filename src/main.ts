@@ -33,10 +33,26 @@ button.addEventListener("click", () => {
   counterDiv.textContent = `${count} game${count !== 1 ? "s" : ""}`;
 });
 
-setInterval(() => {
-  count++;
-  counterDiv.textContent = `${count} game${count !== 1 ? "s" : ""}`;
-}, 1000);
+//setInterval(() => {
+//  count++;
+//  counterDiv.textContent = `${count} game${count !== 1 ? "s" : ""}`;
+//}, 1000);
+
+let lastTime = performance.now();
+
+function animate(time) {
+  const delta = time - lastTime;
+  lastTime = time;
+
+  count += delta / 1000;
+  counterDiv.textContent = `${count.toFixed(2)} cookie${
+    Math.floor(count) !== 1 ? "s" : ""
+  }`;
+
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
 
 document.body.appendChild(button);
 document.body.appendChild(counterDiv);
