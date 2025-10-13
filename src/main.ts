@@ -1,9 +1,9 @@
-import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
-import "./style.css";
+//import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
+//import "./style.css";
 
-document.body.innerHTML = `
-  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
-`;
+//document.body.innerHTML = `
+//  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
+//`;
 
 const button = document.createElement("button");
 button.innerHTML = "🎮";
@@ -58,9 +58,15 @@ let smokePurchases = 0;
 
 // --- Update text for buttons ---
 function updateButtonLabels() {
-  upgradeButton.innerHTML = `GameGo (+0.1 games/sec for ${gameGoPrice.toFixed(2)} games)`;
-  payStationStore.innerHTML = `PayStation Store (+2 games/sec for ${payStationPrice.toFixed(2)} games)`;
-  smoke.innerHTML = `Smoke Store (+50 games/sec for ${smokePrice.toFixed(2)} games)`;
+  upgradeButton.innerHTML = `GameGo (+0.1 games/sec for ${
+    gameGoPrice.toFixed(2)
+  } games)`;
+  payStationStore.innerHTML = `PayStation Store (+2 games/sec for ${
+    payStationPrice.toFixed(2)
+  } games)`;
+  smoke.innerHTML = `Smoke Store (+50 games/sec for ${
+    smokePrice.toFixed(2)
+  } games)`;
 }
 
 updateButtonLabels();
@@ -137,7 +143,7 @@ smoke.addEventListener("click", () => {
 // --- Animation frame increment ---
 let lastTime = performance.now();
 
-function animate(time) {
+function animate(time: number) {
   const delta = time - lastTime;
   lastTime = time;
 
