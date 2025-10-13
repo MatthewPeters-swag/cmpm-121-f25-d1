@@ -31,14 +31,47 @@ interface Item {
   name: string;
   price: number;
   gain: number;
+  description: string;
   purchases: number;
   button?: HTMLButtonElement;
 }
 
 const availableItems: Item[] = [
-  { name: "GameGo", price: 10, gain: 0.1, purchases: 0 },
-  { name: "PayStation Store", price: 100, gain: 2, purchases: 0 },
-  { name: "Smoke Store", price: 1000, gain: 50, purchases: 0 },
+  {
+    name: "GameGo",
+    price: 10,
+    gain: 0.1,
+    description: "Your telling me you leave your house to buy these things?",
+    purchases: 0,
+  },
+  {
+    name: "PayStation Store",
+    price: 100,
+    gain: 2,
+    description: "A virtual storefront that sells overpriced remakes.",
+    purchases: 0,
+  },
+  {
+    name: "Smoke Store",
+    price: 1000,
+    gain: 50,
+    description: "I get it.",
+    purchases: 0,
+  },
+  {
+    name: "Ninecent",
+    price: 5000,
+    gain: 200,
+    description: "Your favorite billion dollar corporation!",
+    purchases: 0,
+  },
+  {
+    name: "Saudi Arabia",
+    price: 20000,
+    gain: 1000,
+    description: "Huh?",
+    purchases: 0,
+  },
 ];
 
 // --- Game state ---
@@ -54,6 +87,9 @@ availableItems.forEach((item) => {
   btn.style.cursor = "pointer";
   btn.disabled = true;
   item.button = btn;
+
+  // Set tooltip for description
+  btn.title = item.description;
 
   // Update button label
   const updateLabel = () => {
