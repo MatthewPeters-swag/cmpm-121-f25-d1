@@ -1,148 +1,117 @@
-//import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
-//import "./style.css";
+import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
+import "./style.css";
 
-//document.body.innerHTML = `
-//  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
-//`;
+// Display icon
+document.body.innerHTML = `
+  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
+`;
 
+// Main click button
 const button = document.createElement("button");
 button.innerHTML = "🎮";
 button.style.padding = "10px 20px";
 button.style.fontSize = "18px";
 button.style.cursor = "pointer";
 
+// Counter display
 const counterDiv = document.createElement("div");
 counterDiv.textContent = "0 games";
 counterDiv.style.marginTop = "15px";
 counterDiv.style.fontSize = "18px";
 counterDiv.style.fontWeight = "bold";
 
+// Stats display
 const statsDiv = document.createElement("div");
 statsDiv.style.marginTop = "10px";
 statsDiv.style.fontSize = "16px";
 statsDiv.style.fontFamily = "monospace";
 
-// --- Upgrade buttons ---
-const upgradeButton = document.createElement("button");
-upgradeButton.style.padding = "10px 20px";
-upgradeButton.style.fontSize = "16px";
-upgradeButton.style.marginTop = "10px";
-upgradeButton.style.cursor = "pointer";
-upgradeButton.disabled = true;
+// --- Define upgrade items ---
+interface Item {
+  name: string;
+  price: number;
+  gain: number;
+  purchases: number;
+  button?: HTMLButtonElement;
+}
 
-const payStationStore = document.createElement("button");
-payStationStore.style.padding = "10px 20px";
-payStationStore.style.fontSize = "16px";
-payStationStore.style.marginTop = "10px";
-payStationStore.style.cursor = "pointer";
-payStationStore.disabled = true;
-
-const smoke = document.createElement("button");
-smoke.style.padding = "10px 20px";
-smoke.style.fontSize = "16px";
-smoke.style.marginTop = "10px";
-smoke.style.cursor = "pointer";
-smoke.disabled = true;
-
-// --- Prices ---
-let gameGoPrice = 10;
-let payStationPrice = 100;
-let smokePrice = 1000;
+const availableItems: Item[] = [
+  { name: "GameGo", price: 10, gain: 0.1, purchases: 0 },
+  { name: "PayStation Store", price: 100, gain: 2, purchases: 0 },
+  { name: "Smoke Store", price: 1000, gain: 50, purchases: 0 },
+];
 
 // --- Game state ---
 let count = 0;
 let growthRate = 0;
-let gameGoPurchases = 0;
-let payStationPurchases = 0;
-let smokePurchases = 0;
 
-// --- Update text for buttons ---
-function updateButtonLabels() {
-  upgradeButton.innerHTML = `GameGo (+0.1 games/sec for ${
-    gameGoPrice.toFixed(2)
-  } games)`;
-  payStationStore.innerHTML = `PayStation Store (+2 games/sec for ${
-    payStationPrice.toFixed(2)
-  } games)`;
-  smoke.innerHTML = `Smoke Store (+50 games/sec for ${
-    smokePrice.toFixed(2)
-  } games)`;
-}
+// --- Build upgrade buttons dynamically ---
+availableItems.forEach((item) => {
+  const btn = document.createElement("button");
+  btn.style.padding = "10px 20px";
+  btn.style.fontSize = "16px";
+  btn.style.marginTop = "10px";
+  btn.style.cursor = "pointer";
+  btn.disabled = true;
+  item.button = btn;
 
-updateButtonLabels();
+  // Update button label
+  const updateLabel = () => {
+    btn.innerHTML = `${item.name} (+${item.gain} games/sec for ${
+      item.price.toFixed(2)
+    } games)`;
+  };
+  updateLabel();
 
-// --- Update stats ---
+  // Purchase logic
+  btn.addEventListener("click", () => {
+    if (count >= item.price) {
+      count -= item.price;
+      growthRate += item.gain;
+      item.purchases++;
+      item.price *= 1.15; // increase price by 15%
+      updateLabel();
+      updateCounter();
+    }
+  });
+
+  document.body.appendChild(btn);
+});
+
+// --- Update Stats ---
 function updateStats() {
-  statsDiv.innerHTML = `
-    Growth rate: ${growthRate.toFixed(2)} games/sec<br>
-    GameGo purchases: ${gameGoPurchases}<br>
-    PayStation purchases: ${payStationPurchases}<br>
-    Smoke purchases: ${smokePurchases}
-  `;
+  let statsHTML = `Growth rate: ${growthRate.toFixed(2)} games/sec<br>`;
+  availableItems.forEach((item) => {
+    statsHTML += `${item.name} purchases: ${item.purchases}<br>`;
+  });
+  statsDiv.innerHTML = statsHTML;
 }
 
-// --- Update counter + button states ---
+// --- Update Counter ---
 function updateCounter() {
   counterDiv.textContent = `${count.toFixed(2)} game${
     Math.floor(count) !== 1 ? "s" : ""
   }`;
-  upgradeButton.disabled = count < gameGoPrice;
-  payStationStore.disabled = count < payStationPrice;
-  smoke.disabled = count < smokePrice;
+  availableItems.forEach((item) => {
+    if (item.button) {
+      item.button.disabled = count < item.price;
+    }
+  });
   updateStats();
 }
 
-// --- Button hover styles ---
-button.onmouseover = () => {
-  button.style.backgroundColor = "#ffcc00";
-};
-button.onmouseout = () => {
-  button.style.backgroundColor = "";
-};
+// --- Hover effect for main button ---
+button.onmouseover = () => (button.style.backgroundColor = "#ffcc00");
+button.onmouseout = () => (button.style.backgroundColor = "");
 
-// --- Click to gain 1 ---
+// --- Manual click increments ---
 button.addEventListener("click", () => {
   count++;
   updateCounter();
 });
 
-// --- Upgrade purchases ---
-upgradeButton.addEventListener("click", () => {
-  if (count >= gameGoPrice) {
-    count -= gameGoPrice;
-    growthRate += 0.1;
-    gameGoPurchases++;
-    gameGoPrice *= 1.15; // price increases 15%
-    updateButtonLabels();
-    updateCounter();
-  }
-});
-
-payStationStore.addEventListener("click", () => {
-  if (count >= payStationPrice) {
-    count -= payStationPrice;
-    growthRate += 2;
-    payStationPurchases++;
-    payStationPrice *= 1.15; // price increases 15%
-    updateButtonLabels();
-    updateCounter();
-  }
-});
-
-smoke.addEventListener("click", () => {
-  if (count >= smokePrice) {
-    count -= smokePrice;
-    growthRate += 50;
-    smokePurchases++;
-    smokePrice *= 1.15; // price increases 15%
-    updateButtonLabels();
-    updateCounter();
-  }
-});
-
-// --- Animation frame increment ---
+// --- Automatic animation-based increment ---
 let lastTime = performance.now();
-
 function animate(time: number) {
   const delta = time - lastTime;
   lastTime = time;
@@ -152,13 +121,9 @@ function animate(time: number) {
 
   requestAnimationFrame(animate);
 }
-
 requestAnimationFrame(animate);
 
-// --- Add all elements to page ---
+// --- Append everything to document ---
 document.body.appendChild(button);
 document.body.appendChild(counterDiv);
 document.body.appendChild(statsDiv);
-document.body.appendChild(upgradeButton);
-document.body.appendChild(payStationStore);
-document.body.appendChild(smoke);
