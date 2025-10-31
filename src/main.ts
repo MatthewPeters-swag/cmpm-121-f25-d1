@@ -30,6 +30,7 @@ interface Item {
   button?: HTMLButtonElement;
 }
 
+// --- Initialize available item upgrades ---
 const availableItems: Item[] = [
   {
     name: "GameGo",
