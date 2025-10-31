@@ -109,12 +109,12 @@ function initializeUpgrades(): void {
     btn.title = item.description;
 
     // Button label
-    const updateLabel = () => {
+    const updatePriceLabel = () => {
       btn.innerHTML = `${item.name} (+${item.gain} games/sec for ${
         item.price.toFixed(2)
       } games)`;
     };
-    updateLabel();
+    updatePriceLabel();
 
     // Purchase logic
     btn.addEventListener("click", () => {
@@ -123,7 +123,7 @@ function initializeUpgrades(): void {
         growthRate += item.gain;
         item.purchases++;
         item.price *= 1.15; // Price increases by 15%
-        updateLabel();
+        updatePriceLabel();
         updateCounter();
       }
     });
