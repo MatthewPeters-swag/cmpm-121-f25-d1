@@ -1,10 +1,4 @@
-import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
 import "./style.css";
-
-// Display icon
-document.body.innerHTML = `
-  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
-`;
 
 // Main click button
 const button = document.createElement("button");
@@ -78,42 +72,6 @@ const availableItems: Item[] = [
 let count = 0;
 let growthRate = 0;
 
-// --- Build upgrade buttons dynamically ---
-availableItems.forEach((item) => {
-  const btn = document.createElement("button");
-  btn.style.padding = "10px 20px";
-  btn.style.fontSize = "16px";
-  btn.style.marginTop = "10px";
-  btn.style.cursor = "pointer";
-  btn.disabled = true;
-  item.button = btn;
-
-  // Set tooltip for description
-  btn.title = item.description;
-
-  // Update button label
-  const updateLabel = () => {
-    btn.innerHTML = `${item.name} (+${item.gain} games/sec for ${
-      item.price.toFixed(2)
-    } games)`;
-  };
-  updateLabel();
-
-  // Purchase logic
-  btn.addEventListener("click", () => {
-    if (count >= item.price) {
-      count -= item.price;
-      growthRate += item.gain;
-      item.purchases++;
-      item.price *= 1.15; // increase price by 15%
-      updateLabel();
-      updateCounter();
-    }
-  });
-
-  document.body.appendChild(btn);
-});
-
 // --- Update Stats ---
 function updateStats() {
   let statsHTML = `Growth rate: ${growthRate.toFixed(2)} games/sec<br>`;
@@ -134,6 +92,44 @@ function updateCounter() {
     }
   });
   updateStats();
+}
+
+// --- Create and initialize upgrade buttons ---
+function initializeUpgrades(): void {
+  availableItems.forEach((item) => {
+    const btn = document.createElement("button");
+    btn.style.padding = "10px 20px";
+    btn.style.fontSize = "16px";
+    btn.style.marginTop = "10px";
+    btn.style.cursor = "pointer";
+    btn.disabled = count < item.price;
+    item.button = btn;
+
+    // Tooltip for description
+    btn.title = item.description;
+
+    // Button label
+    const updateLabel = () => {
+      btn.innerHTML = `${item.name} (+${item.gain} games/sec for ${
+        item.price.toFixed(2)
+      } games)`;
+    };
+    updateLabel();
+
+    // Purchase logic
+    btn.addEventListener("click", () => {
+      if (count >= item.price) {
+        count -= item.price;
+        growthRate += item.gain;
+        item.purchases++;
+        item.price *= 1.15; // Price increases by 15%
+        updateLabel();
+        updateCounter();
+      }
+    });
+
+    document.body.appendChild(btn);
+  });
 }
 
 // --- Hover effect for main button ---
@@ -157,9 +153,12 @@ function animate(time: number) {
 
   requestAnimationFrame(animate);
 }
-requestAnimationFrame(animate);
 
 // --- Append everything to document ---
 document.body.appendChild(button);
 document.body.appendChild(counterDiv);
 document.body.appendChild(statsDiv);
+
+// --- Initialize Upgrades and Start Animation ---
+initializeUpgrades();
+requestAnimationFrame(animate);
