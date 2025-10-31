@@ -1,5 +1,14 @@
-.icon {
-  width: 64px;
-  vertical-align: top;
-  border: 1px solid salmon;
+/* Terrific awsome background image from mrpoopers */
+body {
+  background-image: url("/workspaces/cmpm-121-f25-d1/src/Gaming.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* Superb white text code from riyer4 'airhorn'*/
+#counter, #stats {
+  color: white;
 }

@@ -9,6 +9,7 @@ button.style.cursor = "pointer";
 
 // Counter display
 const counterDiv = document.createElement("div");
+counterDiv.id = "counter";
 counterDiv.textContent = "0 games";
 counterDiv.style.marginTop = "15px";
 counterDiv.style.fontSize = "18px";
@@ -16,6 +17,7 @@ counterDiv.style.fontWeight = "bold";
 
 // Stats display
 const statsDiv = document.createElement("div");
+statsDiv.id = "stats";
 statsDiv.style.marginTop = "10px";
 statsDiv.style.fontSize = "16px";
 statsDiv.style.fontFamily = "monospace";
